@@ -36,6 +36,7 @@
 #include "shell/app/node_main.h"
 #include "shell/common/electron_command_line.h"
 #include "shell/common/electron_constants.h"
+#include "shell/common/options_duplicates.h"
 #include "third_party/crashpad/crashpad/util/win/initial_client_data.h"
 
 namespace {
@@ -168,7 +169,8 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, wchar_t* cmd, int) {
     std::for_each(argv.begin(), argv.end(), free);
     return ret;
   }
-
+  base::CommandLine::SetDuplicateSwitchHandler(
+      electron::GetDuplicateSwitchHandler());
   base::CommandLine::Init(argv.size(), argv.data());
   const base::CommandLine* command_line =
       base::CommandLine::ForCurrentProcess();

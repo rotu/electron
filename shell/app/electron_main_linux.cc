@@ -16,6 +16,7 @@
 #include "shell/app/uv_stdio_fix.h"
 #include "shell/common/electron_command_line.h"
 #include "shell/common/electron_constants.h"
+#include "shell/common/options_duplicates.h"
 
 namespace {
 
@@ -38,6 +39,8 @@ int main(int argc, char* argv[]) {
   electron::ElectronMainDelegate delegate;
   content::ContentMainParams params(&delegate);
   electron::ElectronCommandLine::Init(argc, argv);
+  base::CommandLine::SetDuplicateSwitchHandler(
+      electron::GetDuplicateSwitchHandler());
   params.argc = argc;
   params.argv = const_cast<const char**>(argv);
   base::CommandLine::Init(params.argc, params.argv);

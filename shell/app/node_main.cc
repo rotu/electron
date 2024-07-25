@@ -30,6 +30,7 @@
 #include "shell/common/node_bindings.h"
 #include "shell/common/node_includes.h"
 #include "shell/common/node_util.h"
+#include "shell/common/options_duplicates.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/child/v8_crashpad_support_win.h"
@@ -115,6 +116,8 @@ v8::Local<v8::Value> GetParameters(v8::Isolate* isolate) {
 }
 
 int NodeMain(int argc, char* argv[]) {
+  base::CommandLine::SetDuplicateSwitchHandler(
+      electron::GetDuplicateSwitchHandler());
   bool initialized = base::CommandLine::Init(argc, argv);
   if (!initialized) {
     LOG(ERROR) << "Failed to initialize CommandLine";

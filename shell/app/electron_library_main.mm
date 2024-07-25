@@ -16,12 +16,15 @@
 #include "shell/app/node_main.h"
 #include "shell/common/electron_command_line.h"
 #include "shell/common/mac/main_application_bundle.h"
+#include "shell/common/options_duplicates.h"
 
 int ElectronMain(int argc, char* argv[]) {
   electron::ElectronMainDelegate delegate;
   content::ContentMainParams params(&delegate);
   params.argc = argc;
   params.argv = const_cast<const char**>(argv);
+  base::CommandLine::SetDuplicateSwitchHandler(
+      electron::GetDuplicateSwitchHandler());
   electron::ElectronCommandLine::Init(argc, argv);
   return content::ContentMain(std::move(params));
 }
